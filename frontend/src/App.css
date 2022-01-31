@@ -1,0 +1,21 @@
+.wrapper {
+    /* Grid properties */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 1px;
+    row-gap: 1px;
+
+    /* Other properties */
+    background-color: black;
+}
+
+.item {
+
+
+    background-color: tan;
+    border: 1px black;
+    font-size: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
