@@ -5,7 +5,7 @@ const db = new Database('../db')
 
 export const insertUser = (user: User): void => {
     db.prepare(`INSERT INTO user(username, password, salt, iterations) VALUES(?, ?, ?, ?)`)
-      .run([user.username, user.password, user.salt, user.iterations]);    
+      .run([user.username, user.password, user.salt, user.iterations]);
 }
 
 export const getUserByUsername = (username: string): User => {

@@ -1,0 +1,88 @@
+@use '../../styles/sizes';
+@use '../../styles/shared';
+
+.login-wrapper {
+    /* Grid properties */
+    display: grid;
+    grid-template-columns: 1fr [_middle]2fr 1fr;
+    grid-template-rows: [_top]1fr [_middle]1.5fr [_bottom]1fr;
+
+    /* Other properties */
+    width: 100%;
+    height: 100%;
+}
+
+.login-item {
+    grid-column-start: _middle;
+    grid-row-start: _middle;
+    border: 2px solid black;
+}
+
+.main-text-item {
+    grid-column-start: _middle;
+    grid-row-start: _top;
+    justify-self: center;
+    padding-top: sizes.$large;
+}
+
+.link-item {
+    grid-column-start: _middle;
+    grid-row-start: _bottom;
+    justify-self: end;
+    padding-top: sizes.$small;
+}
+
+.login-label {
+    padding-left: sizes.$small;
+}
+
+.form-wrapper {
+    display: grid;
+    justify-items: stretch;
+    grid-template-columns: 1fr;
+    grid-template-rows:  0.25fr 0.25fr 1fr 0.25fr 1fr 0.25fr minmax(0, 1fr);
+}
+
+.login-input {
+    margin-left: sizes.$small;
+    margin-right: sizes.$small;
+    max-height: 40px;
+    font-size: sizes.$medium;
+    padding-left: sizes.$small
+}
+
+.login-label {
+    margin-left: sizes.$small;
+    margin-right: sizes.$small;
+}
+
+.login-link {
+    // justify-self: end;
+    padding-right: sizes.$small;
+
+    // font-size: 12px;
+}
+
+.login-button {
+    width: 100%;
+    height: 100%;
+}
+
+.error-text {
+    color: red;
+    min-height: sizes.$small;
+    margin-left: sizes.$small;
+}
+
+
+/* @media screen and (min-width: 500px) {
+    .wrapper {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+  
+@media screen and (min-width: 800px) {
+    .wrapper {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+} */

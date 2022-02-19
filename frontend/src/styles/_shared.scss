@@ -1,0 +1,13 @@
+@use "./sizes";
+
+.button-link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+
+    font-size: sizes.$medium;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+  }

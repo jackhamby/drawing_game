@@ -23,8 +23,25 @@ export interface LoginResponse {
 
 
 
+
+
+
+export interface Lobby {
+    id: string;
+    name: string;
+    players: Player[];
+    maxPlayers: number;
+}
+
+export interface Player {
+    userId: number;
+}
+
+
+
 export enum ErrorCode {
     "unknown" = 0,
+    "loginFailed" = 1,
 }
 
 export interface ErrorPayload {

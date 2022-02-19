@@ -29,11 +29,10 @@ export const loginUser = (loginCredentials: Login): LoginResponse => {
 
     if (hashedPassword.toString("hex") === user.password){
         const userData = {
-            userId: user.user_id,
             username: user.username,
         }
 
-        const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '1800s' });
+        const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '360s' });
 
         return {
             accessToken: token,
@@ -41,16 +40,5 @@ export const loginUser = (loginCredentials: Login): LoginResponse => {
     }
     else {
         return null;
-    }
-}
-
-export const validateToken = (token: string): boolean => {
-    try{
-        const data = jwt.verify(token, process.env.JWT_SECRET);
-        return true;
-    }
-    catch(exception: any){
-        console.log(exception)
-        return false
     }
 }

@@ -1,0 +1,52 @@
+@use "../../styles/sizes";
+
+
+
+.home-wrapper {
+    margin: sizes.$large;
+    // display: grid;
+    // grid-template-rows: minmax(100px, 6fr) 2fr;
+}
+
+.table-wrapper {
+    max-height: 60%;
+    overflow: scroll;
+    border: 1px solid black;
+}
+
+.buttons-container {
+    display: flex;
+    // margin-right: auto
+    justify-content: flex-end;
+
+    button {
+        margin-right: sizes.$medium;
+        margin-top: sizes.$small;
+    }
+}
+
+
+
+.lobby-table {
+    border-collapse: separate;
+    width: 100%;
+
+    tr {
+        border-bottom: 1px solid black;
+        transition: background-color 1s;
+    }
+    tr:last-child {
+        border-bottom: none;
+    }
+
+    tr:hover{
+        background-color: lightgray;
+    }
+
+    th {
+        border-bottom: 1px solid black;
+        position: sticky;
+        top: - sizes.$extra-small;
+        background-color: white;
+    }
+}

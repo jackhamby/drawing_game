@@ -1,0 +1,41 @@
+
+.layout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 10fr;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+// .login-wrapper {
+//     /* Grid properties */
+//     display: grid;
+//     grid-template-columns: 1fr [_middle]2fr 1fr;
+//     grid-template-rows: [_top]1fr [_middle]1.5fr [_bottom]1fr;
+
+//     /* Other properties */
+//     width: 100%;
+//     height: 100%;
+// }
+
+// .login-item {
+//     grid-column-start: _middle;
+//     grid-row-start: _middle;
+//     border: 2px solid black;
+// }
+
+// .main-text-item {
+//     grid-column-start: _middle;
+//     grid-row-start: _top;
+//     justify-self: center;
+//     padding-top: sizes.$large;
+// }
+
+// .link-item {
+//     grid-column-start: _middle;
+//     grid-row-start: _bottom;
+//     justify-self: end;
+//     padding-top: sizes.$small;
+// }

@@ -1,0 +1,29 @@
+@use '../styles/sizes';
+
+.header {
+    border-bottom: 1px solid black;
+    padding: sizes.$small;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+
+    .title {
+        margin: 0 !important;
+    }
+
+    .menu {
+        // align-self: flex-end;
+        justify-self: end;
+
+        select {
+            min-width: sizes.$extra-large;
+        }
+    }
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;       /* Remove default arrow */
+ }
