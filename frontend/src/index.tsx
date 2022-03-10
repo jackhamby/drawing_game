@@ -13,7 +13,8 @@ axiosClient.interceptors.request.use((config) => {
   let session;
   try{
     session = JSON.parse(localStorage.getItem("session")!);
-    config.headers!.Authorization = `Bearer ${session?.token}`
+    config.headers!.Authorization = `Bearer ${session?.token}`;
+    // config.headers!["Content-Type"] = "application/json";
   } 
   catch {
     

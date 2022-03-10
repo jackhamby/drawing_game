@@ -1,6 +1,6 @@
 
 import express, { Request, Response } from "express";
-import { CreateUser, ErrorCode, Login, ResponsePayload, User } from "../types";
+import { CreateUser, Login, ResponsePayload, User } from "../types";
 import { createUser, loginUser } from "../infrastructure/user-manager";
 import { authenticateToken } from "../utils/auth";
 
@@ -19,7 +19,6 @@ router.post("/user", (request: Request<{}, {}, CreateUser>, response: Response) 
         const responsePayload: ResponsePayload = {
             data: null,
             error: {
-                errorCode: ErrorCode.unknown,
                 message: "An error occured",
             }
         }
@@ -40,7 +39,6 @@ router.post("/login", (request: Request<{}, {}, Login>, response: Response) => {
         responsePayload = {
             data: null,
             error: {
-                errorCode: ErrorCode.unknown,
                 message: "An error occured",
             }
         }
@@ -50,7 +48,6 @@ router.post("/login", (request: Request<{}, {}, Login>, response: Response) => {
     responsePayload = {
         data: result,
         error: result ? null : {
-            errorCode: ErrorCode.loginFailed,
             message: "login failed"
         }
     }

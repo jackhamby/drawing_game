@@ -12,13 +12,12 @@ export interface Response<T> {
 export const get = async <T>(url: string, params: Record<string, any> = {}): Promise<Response<T>> => {
     let response: AxiosResponse<Response<T>>;
     try {
-        console.log(JSON.stringify(axiosClient.interceptors))
         response = await axiosClient.get<Response<T>>(url, { params });
     }
     catch(error: any) {
         console.error(`GET request faied to ${url}`);
         console.error(error)
-        response = error?.response?.data;
+        response = error?.response;
     }
 
     return response?.data;
@@ -32,7 +31,7 @@ export const post = async <T>(url: string, data: any): Promise<Response<T>> => {
     catch(error: any) {
         console.error(`POST request faied to ${url}`);
         console.error(error)
-        response = error?.response?.data;
+        response = error?.response;
     }
 
     return response?.data;

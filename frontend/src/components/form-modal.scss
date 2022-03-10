@@ -1,0 +1,34 @@
+@use '../styles/sizes';
+
+.modal-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-wrapper {
+    width: 500px;
+    // height: 500px;
+    border: 1px solid black;
+    z-index: 1;
+    top: 25%;
+    left: 25%;
+    background-color: white;
+    position: fixed;
+}
+
+.modal-content {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 9fr 1fr;
+}
+
+.modal-buttons {
+    justify-self: flex-end;
+    margin-right: sizes.$small;
+    margin-bottom: sizes.$small;
+}

@@ -30,6 +30,7 @@ export const loginUser = (loginCredentials: Login): LoginResponse => {
     if (hashedPassword.toString("hex") === user.password){
         const userData = {
             username: user.username,
+            userId: user.user_id
         }
 
         const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '360s' });

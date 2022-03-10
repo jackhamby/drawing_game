@@ -1,3 +1,25 @@
+import ws from "ws";
+
+
+export interface SocketConnection {
+    authToken: string;
+    userId: number;
+    gameId?: number;
+    socket: ws.WebSocket;
+}
+
+
+export enum SocketEvents {
+    LOBBY_CREATED = "LOBBY_CREATED",
+    LOBBY_UPDATED = "LOBBY_UPDATED"
+}
+
+export interface SocketEvent {
+    event: SocketEvents;
+    payload: any;
+}
+
+
 export interface CreateUser {
     username: string;
     password: string;
@@ -39,13 +61,17 @@ export interface Player {
 
 
 
-export enum ErrorCode {
-    "unknown" = 0,
-    "loginFailed" = 1,
+
+
+
+export class UserException extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "UserException";
+      }
 }
 
 export interface ErrorPayload {
-    errorCode: number;
     message: string;
 }
 

@@ -4,6 +4,7 @@
 
 .home-wrapper {
     margin: sizes.$large;
+    overflow: auto;
     // display: grid;
     // grid-template-rows: minmax(100px, 6fr) 2fr;
 }
@@ -30,10 +31,14 @@
 .lobby-table {
     border-collapse: separate;
     width: 100%;
+    border-spacing: 0 2px;
+
+    .selected {
+        background-color: lightgray;
+    }
 
     tr {
-        border-bottom: 1px solid black;
-        transition: background-color 1s;
+        transition: background-color 0.5s;
     }
     tr:last-child {
         border-bottom: none;
@@ -48,5 +53,6 @@
         position: sticky;
         top: - sizes.$extra-small;
         background-color: white;
+        text-align: left;
     }
 }

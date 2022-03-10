@@ -23,7 +23,6 @@ const getSavedSession = (): UserSession => {
   const savedSessionString = localStorage.getItem("session");
   if (savedSessionString){
       const session: UserSession = JSON.parse(savedSessionString)
-      console.log('restoring saved session')
       return session;
   }
   return {};
@@ -54,8 +53,6 @@ const useAuth = (): AuthContext => {
   }
 
   const logout = () => {
-    console.log('logigng out')
-    localStorage.removeItem("session")
     setUserSession({});
   };
 

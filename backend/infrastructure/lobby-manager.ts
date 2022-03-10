@@ -1,5 +1,6 @@
-import { Lobby } from "../types";
+import { Lobby, UserException } from "../types";
 import crypto from "crypto";
+import { sendLobbyCreateEvent, sendLobbyUpdatedEvent } from "./socket-manager";
 
 const lobbies: Record<string, Lobby> = {
     "1": {
@@ -27,7 +28,7 @@ const lobbies: Record<string, Lobby> = {
             }
         ],
         maxPlayers: 8,
-    }, 
+    },
     "3" : {
         name: "lobby JOIN FASTTT 3v3",
         id: "3",
@@ -46,7 +47,9 @@ const lobbies: Record<string, Lobby> = {
 
 export const getLobbies = () => {
     return Object.keys(lobbies).map((key: string) => {
-        return lobbies[key];
+        if (lobbies[key]?.players?.length < lobbies[key].maxPlayers){
+            return lobbies[key];
+        }
     })
 }
 
@@ -59,5 +62,26 @@ export const createLobby = (lobbyData: Lobby) => {
         players: [],
     }
     lobbies[id] = lobby;
+    sendLobbyCreateEvent(lobby);
     return id;
+}
+
+export const joinLobby = (userId: number, lobbyId: string) => {
+    // TODO: validation to make sure they are allowed to join that lobby
+    // TODO: make sure lobby exists before we allow them to join
+    // TODO: make sure no duplicate players
+    const lobby  = lobbies[lobbyId]
+    if (!lobby){
+        throw new UserException("Lobby does not exist");
+    }
+    else if (lobby.players?.length >= lobby.maxPlayers){
+        throw new UserException("Lobby is full")
+    }
+
+    lobbies[lobbyId].players.push({
+        userId
+    });
+
+    sendLobbyUpdatedEvent(lobbies[lobbyId]);
+    return true;
 }
