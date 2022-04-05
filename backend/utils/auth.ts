@@ -1,5 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+import { UserJwtData } from "../types";
 
 export const validateToken = (token: string): boolean => {
     try {
@@ -23,15 +24,15 @@ export const authenticateToken = (request: Request, response: Response, next: an
     return response.sendStatus(401);
 }
 
-export const getRequestUserId = (request: Request): number => {
-    const authHeader = request.headers.authorization;
-    if (!authHeader) return -1;
-    const token = authHeader.split(' ')[1];
-    return getUserId(token)
-}
-
-export const getUserId = (token: string) => {
+export const getUser = (token: string): UserJwtData => {
     const base64Url = token.split('.')[1];
     const data = JSON.parse(Buffer.from(base64Url, 'base64').toString('binary'));
-    return data.userId;
+    return data;
+}
+
+export const getRequestUser = (request: Request): UserJwtData => {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) null;
+    const token = authHeader.split(' ')[1];
+    return getUser(token);
 }

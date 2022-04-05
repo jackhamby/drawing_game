@@ -1,6 +1,6 @@
 import { Lobby, SocketConnection } from "../types";
 import ws from "ws";
-import { getUserId, validateToken } from "../utils/auth";
+import { getUser, validateToken } from "../utils/auth";
 import url from "url";
 
 const sockets: SocketConnection[] = []
@@ -27,8 +27,8 @@ export const sendLobbyUpdatedEvent = (lobby: Lobby) => {
 }
 
 
-export const initWebsocketServer = (server: ws.WebSocketServer) => {
 
+export const initWebsocketServer = (server: ws.WebSocketServer) => {
     server.on('connection', (socket, request) => {
         const data = url.parse(request.url, true).query;
         const token = data.token as string;
@@ -36,10 +36,9 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
             socket.close();
             return;
         }
-        const userId = getUserId(token);
+        const userId = getUser(token).userId;
 
         const handleMessage = (message: any) => {
-            console.log(`recieved message ${message}`)
             switch(message.event){
                 case ("CONNECTION"):
                     const socketConnection: SocketConnection = {

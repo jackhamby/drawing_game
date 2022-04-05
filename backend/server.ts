@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user";
 import lobbyRoutes from "./routes/lobby";
 import url from "url";
-import { getUserId, validateToken } from "./utils/auth";
+import { validateToken } from "./utils/auth";
 import { SocketConnection } from "./types";
 import { initWebsocketServer } from "./infrastructure/socket-manager";
 

@@ -32,7 +32,6 @@ router.post("/login", (request: Request<{}, {}, Login>, response: Response) => {
     let result;
     let responsePayload: ResponsePayload;
     try{
-        console.log(request.body)
         result = loginUser(request.body);
     }
     catch(exception: any){

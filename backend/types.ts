@@ -42,6 +42,10 @@ export interface LoginResponse {
     accessToken: string;
 }
 
+export interface UserJwtData {
+    username: string;
+    userId: number;
+}
 
 
 
@@ -51,12 +55,20 @@ export interface LoginResponse {
 export interface Lobby {
     id: string;
     name: string;
-    players: Player[];
     maxPlayers: number;
+    hostUserId: number;
+    team1: Team;
+    team2: Team;
 }
 
 export interface Player {
+    username: string;
     userId: number;
+    color: string;
+}
+
+export interface Team {
+    players: Player[];
 }
 
 
@@ -68,6 +80,13 @@ export class UserException extends Error {
     constructor(message: string) {
         super(message);
         this.name = "UserException";
+      }
+}
+
+export class UnauthorizedAccessException extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "UnauthorizedAccessException";
       }
 }
 
