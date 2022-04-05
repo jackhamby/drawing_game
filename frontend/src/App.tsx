@@ -9,19 +9,23 @@ import { Layout } from "./components/layout";
 import useAuth from "./hooks/useAuth";
 import { axiosClient } from ".";
 import { Lobby } from "./pages/lobby/lobby";
+import { SignUp } from "./pages/sign-up/signup";
 
 
 function App() {
     return (  
     <Routes>
       <Route path="login" element={<Login/>} />
+      <Route path="signup" element={<SignUp/>}/>
       <Route path="/" element={
         <RequiresAuth>
           <Layout/>
        </RequiresAuth>
       }>
         <Route path="" element={<LobbyDashboard/>}/>
-        <Route path="test" element={<div> test route</div>}/>
+        <Route path="test/:id" element={<div> test route</div>}/>
+        <Route path="test/anotherone" element={<div> another test route</div>}/>
+
         <Route path="lobby/:id" element={<Lobby />}/>
       </Route>
     </Routes>

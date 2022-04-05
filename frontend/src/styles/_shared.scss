@@ -11,3 +11,37 @@
     text-decoration: underline;
     cursor: pointer;
   }
+
+.table {
+  border-collapse: separate;
+  width: 100%;
+  border-spacing: 0 2px;
+
+  td {
+      height: sizes.$large;
+      padding-left: sizes.$small;
+  }
+
+  .selected {
+      background-color: lightgray;
+  }
+
+  tr {
+      transition: background-color 0.5s;
+  }
+  tr:last-child {
+      border-bottom: none;
+  }
+
+  tr:hover{
+      background-color: lightgray;
+  }
+
+  th {
+      border-bottom: 1px solid black;
+      position: sticky;
+      top: - sizes.$extra-small;
+      background-color: white;
+      text-align: left;
+  }
+}

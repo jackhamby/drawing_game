@@ -69,7 +69,6 @@ export const LobbyDashboard = () => {
             if (tableBodyRef?.current && !tableBodyRef.current.contains(event.target as Node)){
                 setSelectedGame(null);
             }
-
         }
 
         const getLobbies = async () => {
@@ -92,6 +91,10 @@ export const LobbyDashboard = () => {
         }
     }, [])
 
+    const getLobbyPlayerCount = (lobby: Lobby) => {
+        return lobby.team1.players.length + lobby.team2.players.length;
+    }
+
     const createLobby = async (lobbyData: LobbyCreate) => {
         const response = await post<string>("/lobby", lobbyData);
         if (!response.error){
@@ -113,17 +116,13 @@ export const LobbyDashboard = () => {
         if (!selectedGame){
             return false;
         }
-
         const selectedLobby = lobbies.find((lobby) => lobby.id === selectedGame);
-
         if (!selectedLobby){
             return false;
         }
-
-        if (selectedLobby.players?.length >= selectedLobby.maxPlayers){
+        if (getLobbyPlayerCount(selectedLobby) >= selectedLobby.maxPlayers){
             return false;
         }
-
         return true;
     }
 
@@ -159,7 +158,7 @@ export const LobbyDashboard = () => {
                                         {lobby.name}
                                     </td>
                                     <td>
-                                        {lobby.players.length}/{lobby.maxPlayers}
+                                        {getLobbyPlayerCount(lobby)}/{lobby.maxPlayers}
                                     </td>
                                 </tr>
                             );

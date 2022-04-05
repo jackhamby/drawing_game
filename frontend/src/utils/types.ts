@@ -2,16 +2,31 @@ export interface LoginResponse {
     accessToken: string;
 }
 
-export interface Player {
-    userId: number;
-}
+
+
+
 
 export interface Lobby {
     id: string;
     name: string;
-    players: Player[];
     maxPlayers: number;
+
+    team1: Team;
+    team2: Team;
 }
+
+export interface Player {
+    userId: number;
+    username: string;
+    color: string;
+}
+
+export interface Team {
+    players: Player[];
+}
+
+
+
 
 export interface LobbyCreate {
     name: string;

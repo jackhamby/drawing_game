@@ -1,0 +1,67 @@
+@use '../../styles/sizes';
+@use '../../styles/shared';
+
+
+.signup-wrapper {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+    grid-template-rows: repeat(12, [row-start] 1fr);
+    justify-items: stretch;
+}
+
+.signup-form {
+    grid-column: 4 / span 6;
+    grid-row: 4 / span 6;
+    border: 2px solid black;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr repeat(3, [label] .5fr [input] 1fr) [error] 0.5fr [button] 1fr;
+
+    input {
+        margin-left: sizes.$small;
+        margin-right: sizes.$small;
+        max-height: 40px;
+        font-size: sizes.$medium;
+        padding-left: sizes.$small;
+    }
+
+    label {
+        margin-left: sizes.$small;
+        margin-right: sizes.$small;
+        margin-bottom: sizes.$small; 
+    }
+    // background-color: black;
+}
+
+// // TODO: a lot of this is straight copy from login.scss
+// .signup-input {
+
+//     // width: 100%;
+// }
+
+// .signup-label {
+//     margin-left: sizes.$small;
+//     margin-right: sizes.$small;
+//     margin-bottom: sizes.$small;
+// }
+
+// .signup-link {
+//     // justify-self: end;
+//     padding-right: sizes.$small;
+
+//     // font-size: 12px;
+// }
+
+// .signup-button {
+//     width: 100%;
+//     height: 100%;
+//     min-height: 40px;
+// }
+
+// .error-text {
+//     color: red;
+//     min-height: sizes.$small;
+//     margin-left: sizes.$small;
+// }

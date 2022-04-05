@@ -3,23 +3,25 @@
 .header {
     border-bottom: 1px solid black;
     padding: sizes.$small;
-    display: grid;
 
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+    // display: grid;
+
+    // grid-template-columns: 1fr 1fr;
+    // grid-template-rows: 1fr;
 
     .title {
         margin: 0 !important;
+        // padding-left: 48px;
     }
 
-    .menu {
-        // align-self: flex-end;
-        justify-self: end;
+    // .menu {
+    //     // align-self: flex-end;
+    //     justify-self: end;
 
-        select {
-            min-width: sizes.$extra-large;
-        }
-    }
+    //     select {
+    //         min-width: sizes.$extra-large;
+    //     }
+    // }
 }
 
 select {
