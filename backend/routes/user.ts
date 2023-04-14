@@ -1,6 +1,6 @@
 
 import express, { Request, Response } from "express";
-import { CreateUser, Login, ResponsePayload, User } from "../types";
+import { CreateUser, Login, LoginResponse, ResponsePayload, User } from "../types";
 import { createUser, loginUser } from "../infrastructure/user-manager";
 import { authenticateToken } from "../utils/auth";
 
@@ -10,26 +10,36 @@ router.get("/test", authenticateToken, (request, response) => {
     response.send("hello");
 });
 
-router.post("/user", (request: Request<{}, {}, CreateUser>, response: Response) => {
+router.post("/signup", (request: Request<{}, {}, CreateUser>, response: Response) => {
     // TODO: validation on the request
+    let result: LoginResponse;
+    let responsePayload: ResponsePayload;
     try {
-        createUser(request.body);
+       result = createUser(request.body);
     }
     catch(exception: any){
-        const responsePayload: ResponsePayload = {
+        responsePayload = {
             data: null,
             error: {
                 message: "An error occured",
             }
         }
+        console.error(exception)
         return response.status(500).json(responsePayload);
     }
 
-    return response.sendStatus(201);
+    responsePayload = {
+        data: result,
+        error: result ? null : {
+            message: "signup failed"
+        }
+    }
+
+    return response.status(201).json(responsePayload)
 });
 
 router.post("/login", (request: Request<{}, {}, Login>, response: Response) => {
-    let result;
+    let result: LoginResponse;
     let responsePayload: ResponsePayload;
     try{
         result = loginUser(request.body);

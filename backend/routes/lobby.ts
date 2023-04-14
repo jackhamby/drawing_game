@@ -1,10 +1,14 @@
 
 import express, { Request, Response } from "express";
 import { ResponsePayload, Lobby, UserException, UnauthorizedAccessException } from "../types";
-import { authenticateToken, getRequestUser } from "../utils/auth";
+import { authenticateToken as validateToken, getRequestUser, skipAuth } from "../utils/auth";
 import { createLobby, getLobbies, getLobby, joinLobby, leaveLobby } from "../infrastructure/lobby-manager";
 
 const router = express.Router();
+
+
+const DEBUG = true
+const authenticateToken = DEBUG ? skipAuth : validateToken
 
 router.get("/lobby", authenticateToken, (request, response) => {
     let result: Lobby[] = [];
@@ -69,19 +73,20 @@ router.post("/lobby", authenticateToken, (request, response) => {
     const user = getRequestUser(request);
 
     // TODO: validation on create request
-    // try{
+    try{
         result = createLobby(user, request.body);
-    // }
-    // catch(exception: any){
-    //     responsePayload = {
-    //         data: null,
-    //         error: {
-    //             errorCode: ErrorCode.unknown,
-    //             message: "An error occured",
-    //         }
-    //     }
-    //     return response.status(500).json(responsePayload);
-    // }
+        // throw Error();
+    }
+    catch(exception: any){
+        responsePayload = {
+            data: null,
+            error: {
+                message: "An error occured"
+            }
+        }
+
+        return response.status(500).json(responsePayload);
+    }
 
     responsePayload = {
         data: result,

@@ -6,6 +6,7 @@ import { closeDbConnection } from "./data-access/user";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user";
 import lobbyRoutes from "./routes/lobby";
+import debugRoutes from "./routes/debug";
 import url from "url";
 import { validateToken } from "./utils/auth";
 import { SocketConnection } from "./types";
@@ -31,6 +32,7 @@ app.use(cors()); // TODO: add specific origins
 // register routes
 app.use(userRoutes);
 app.use(lobbyRoutes);
+app.use(debugRoutes)
 
 dotenv.config();
 

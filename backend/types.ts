@@ -4,14 +4,15 @@ import ws from "ws";
 export interface SocketConnection {
     authToken: string;
     userId: number;
-    gameId?: number;
     socket: ws.WebSocket;
+    lobbyId: string | null
 }
 
 
 export enum SocketEvents {
     LOBBY_CREATED = "LOBBY_CREATED",
-    LOBBY_UPDATED = "LOBBY_UPDATED"
+    LOBBY_UPDATED = "LOBBY_UPDATED",
+    LOBBY_CLOSED = "LOBBY_CLOSED",
 }
 
 export interface SocketEvent {

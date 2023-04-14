@@ -9,8 +9,9 @@ export const insertUser = (user: User): void => {
 }
 
 export const getUserByUsername = (username: string): User => {
-    const user = db.prepare(`SELECT * FROM user WHERE username = ?`)
-                   .get([username]);
+    const user = db.prepare<any>(`SELECT * FROM user WHERE username = ?`)
+                   .get([username]) as User;
+    console.log(user)
     return user;
 }
 

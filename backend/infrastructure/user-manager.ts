@@ -14,9 +14,16 @@ export const createUser = (user: CreateUser) => {
         password,
         username: user.username,
         user_id: undefined,
-    }
+    };
 
-    return insertUser(newUser);
+    insertUser(newUser);
+
+    const loginCreds = loginUser({
+        username: user.username,
+        password: user.password
+    });
+
+    return loginCreds;
 }
 
 
@@ -33,7 +40,7 @@ export const loginUser = (loginCredentials: Login): LoginResponse => {
             userId: user.user_id
         }
 
-        const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '3000s' });
+        const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '300000s' });
 
         return {
             accessToken: token,

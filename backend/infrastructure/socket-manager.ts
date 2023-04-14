@@ -1,9 +1,9 @@
-import { Lobby, SocketConnection } from "../types";
+import { Lobby, SocketConnection, SocketEvents } from "../types";
 import ws from "ws";
 import { getUser, validateToken } from "../utils/auth";
 import url from "url";
 
-const sockets: SocketConnection[] = []
+let sockets: SocketConnection[] = []
 
 
 const broadcastMessage = (message: any) => {
@@ -12,20 +12,39 @@ const broadcastMessage = (message: any) => {
     })
 }
 
+const broadcastMessageToLobby = (message: any, lobby: Lobby) => {
+    const players = [...lobby.team1.players, ...lobby.team2.players]
+    const lobbySockets = sockets.filter((sock) => players.some((player) => player.userId === sock.userId))
+    console.log(lobbySockets)
+    lobbySockets.forEach((sock) => {
+        sock.socket.send(JSON.stringify(message))
+    })
+}
+
 export const sendLobbyCreateEvent = (lobby: Lobby) => {
+
     broadcastMessage({
-        event: "LOBBY_CREATED",
+        event: SocketEvents.LOBBY_CREATED,
         payload: lobby
     });
 }
 
+
 export const sendLobbyUpdatedEvent = (lobby: Lobby) => {
     broadcastMessage({
-        event: "LOBBY_UPDATED",
+        event: SocketEvents.LOBBY_UPDATED,
         payload: lobby
     })
 }
 
+
+export const sendLobbyClosedEvent = (lobby: Lobby) => {
+    console.log('sending lobby closed')
+    broadcastMessage({
+        event: SocketEvents.LOBBY_CLOSED,
+        payload: lobby.id
+    })
+}
 
 
 export const initWebsocketServer = (server: ws.WebSocketServer) => {
@@ -44,10 +63,11 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
                     const socketConnection: SocketConnection = {
                         userId,
                         socket,
-                        gameId: message.payload?.gameId,
                         authToken: token,
+                        lobbyId: null,
                     }
                     sockets.push(socketConnection)
+
                     return;
                 default:
                     console.warn(`unhandled event type ${message.event}`)
@@ -56,7 +76,6 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
         }
 
         socket.on('message', message =>  {
-            console.log(message.toString());
             let content;
             try {
                 content = JSON.parse(message.toString());
@@ -65,6 +84,10 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
             catch(e) {
                 console.error("failed to parse json")
             }
+        });
+
+        socket.on("close", (code: number, reason: Buffer) => {
+            sockets = sockets.filter((sock) => sock.socket !== socket)
         });
     });
 }
