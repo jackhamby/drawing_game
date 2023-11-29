@@ -24,15 +24,19 @@ export const authenticateToken = (request: Request, response: Response, next: an
     return response.sendStatus(401);
 }
 
+
 export const skipAuth =  (request: Request, response: Response, next: any) => {
     return next()
 }
 
+
 export const getUser = (token: string): UserJwtData => {
     const base64Url = token.split('.')[1];
+    console.log(base64Url)
     const data = JSON.parse(Buffer.from(base64Url, 'base64').toString('binary'));
     return data;
 }
+
 
 export const getRequestUser = (request: Request): UserJwtData => {
     const authHeader = request.headers.authorization;

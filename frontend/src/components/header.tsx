@@ -1,7 +1,9 @@
+import useAuth from "../hooks/useAuth";
 import "./header.scss";
 
 export const Header = () => {
 
+    const { logout, userSession } = useAuth()
 
     return (
         <header className="header">
@@ -13,6 +15,17 @@ export const Header = () => {
                     <option> logout </option>
                 </select>
             </div> */}
+            {/* <div>
+
+            </div>
+            <div>
+                test
+            </div> */}
+            {/* <h4>hello, {userSession?.username}</h4> */}
+            <div className="actions">
+                hello, {userSession?.username} &nbsp;&nbsp;
+                <button className="menu" onClick={() => logout()}>logout</button>
+            </div>
         </header>
     )
 }

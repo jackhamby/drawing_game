@@ -1,7 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react"
-import { post } from "../../utils/apis";
-import { LobbyCreate } from "../../utils/types";
-import "./lobby-form.scss";
+import { useState } from "react"
 
 export const LobbyForm = () => {
     const [maxPlayers, setMaxPlayers] = useState(4);

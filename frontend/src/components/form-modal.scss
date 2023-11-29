@@ -32,3 +32,9 @@
     margin-right: sizes.$small;
     margin-bottom: sizes.$small;
 }
+
+.modal-error {
+    color: red;
+    display: inline;
+    padding-right: sizes.$large;
+}

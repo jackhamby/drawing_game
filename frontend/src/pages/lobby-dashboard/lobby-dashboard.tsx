@@ -7,6 +7,7 @@ import { get, post } from "../../utils/apis";
 import { Lobby, LobbyCreate, SocketEvent, SocketEvents } from "../../utils/types";
 import "./lobby-dashboard.scss";
 import { LobbyForm } from "./lobby-form";
+import { API_HOST } from "../../settings"
 
 export const LobbyDashboard = () => {
     const [lobbies, setLobbies] = useState<Lobby[]>([])
@@ -18,7 +19,9 @@ export const LobbyDashboard = () => {
     const { userSession } = useAuth();
 
     useEffect(() => {
-        const socket = new WebSocket(`ws://localhost:8000?token=${userSession?.token}`);
+        const socket = new WebSocket(`ws://${API_HOST}?token=${userSession?.token}`);
+        // const socket =new WebSocket(`wss://cca3-2601-445-680-5790-8403-8f58-184-60b0.ngrok-free.app?token=${userSession?.token}`)
+
         socket.onopen = (event) => {
             console.log("opened");
             socket.send(JSON.stringify({
@@ -56,6 +59,9 @@ export const LobbyDashboard = () => {
                             return lobby;
                         });
                     });
+                    break;
+                case(SocketEvents.LOBBY_CLOSED):
+                    setLobbies(lobbies.filter((lobby) => lobby.id !== data.payload))
                     break;
                 default:
                     return;
@@ -134,6 +140,8 @@ export const LobbyDashboard = () => {
         return <Navigate to={redirectUrl}/>
     }
 
+
+    console.log(lobbies)
     return (
 
         <div className="home-wrapper"> 

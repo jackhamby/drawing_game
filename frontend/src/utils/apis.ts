@@ -4,7 +4,6 @@ import { AxiosError, AxiosResponse } from "axios"
 export interface Response<T> {
     data: T,
     error: {
-        errorCode: number,
         message: string
     }
 }

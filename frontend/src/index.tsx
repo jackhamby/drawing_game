@@ -4,9 +4,11 @@ import App from './App';
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from './hooks/useAuth';
+import { API_HOST } from './settings';
 
 export const axiosClient = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: `http://${API_HOST}`,
+  // baseURL: "https://cca3-2601-445-680-5790-8403-8f58-184-60b0.ngrok-free.app"
 });
 
 axiosClient.interceptors.request.use((config) => {
@@ -24,12 +26,10 @@ axiosClient.interceptors.request.use((config) => {
 });
 
 ReactDOM.render(
-  <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </AuthProvider>
-  </React.StrictMode>,
+    </AuthProvider>,
   document.getElementById('root')
 );

@@ -1,9 +1,12 @@
-import { Lobby, SocketConnection, SocketEvents } from "../types";
+import { Game, Lobby, SocketConnection, SocketEvent, SocketEvents } from "../types";
 import ws from "ws";
 import { getUser, validateToken } from "../utils/auth";
 import url from "url";
+import { getLobby } from "./lobby-manager";
 
 let sockets: SocketConnection[] = []
+
+
 
 
 const broadcastMessage = (message: any) => {
@@ -47,6 +50,58 @@ export const sendLobbyClosedEvent = (lobby: Lobby) => {
 }
 
 
+export const sendLobbyChatMessageEvent = (lobby: Lobby) => {
+    console.log('sending lobby message event')
+    broadcastMessageToLobby({
+        event: SocketEvents.LOBBY_CHAT_MESSAGE,
+        payload: lobby.chatMessages
+    }, lobby)
+}
+
+
+export const sendGameStartedEvent = (lobby: Lobby, game: Game) => {
+    console.log('sending game started event')
+    broadcastMessageToLobby({
+        event: SocketEvents.GAME_STARTED,
+        payload: game,
+    }, lobby)
+}
+
+export const sendGameEndedEvent = (lobby: Lobby) => {
+    console.log('sending game ended event')
+    broadcastMessageToLobby({
+        event: SocketEvents.GAME_ENDED,
+    }, lobby)
+}
+
+export const sendRoundStartedEvent = (lobby: Lobby, game: Game, round: number) => {
+    console.log('sending round started event')
+    // TODO: filter
+    broadcastMessageToLobby({
+        event: SocketEvents.ROUND_STARTED,
+        payload: {
+            game,
+            round,
+        }
+    }, lobby)
+}
+
+export const sendRoundEndedEvent = (lobby: Lobby) => {
+    console.log('sending round ended event')
+    broadcastMessageToLobby({
+        event: SocketEvents.ROUND_ENDED,
+    }, lobby)
+}
+
+export const sendGameUpdatedEvent = (lobby: Lobby, dataUrl: string) => {
+    console.log('sending game updated event')
+    broadcastMessageToLobby({
+        event: SocketEvents.GAME_UPDATED,
+        payload: dataUrl,
+    }, lobby)
+}
+
+
 export const initWebsocketServer = (server: ws.WebSocketServer) => {
     server.on('connection', (socket, request) => {
         const data = url.parse(request.url, true).query;
@@ -57,9 +112,9 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
         }
         const userId = getUser(token).userId;
 
-        const handleMessage = (message: any) => {
+        const handleMessage = (message: SocketEvent) => {
             switch(message.event){
-                case ("CONNECTION"):
+                case (SocketEvents.CONNECTION):
                     const socketConnection: SocketConnection = {
                         userId,
                         socket,
@@ -69,6 +124,15 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
                     sockets.push(socketConnection)
 
                     return;
+                case(SocketEvents.GAME_UPDATED):
+                    console.log("server recieved game updated event")
+                    console.log(message)
+                    const lobbyId = message.payload.id
+                    const dataUrl = message.payload.dataUrl
+                    const lobby = getLobby(userId, lobbyId)
+                    // TODO: validate userId is current drawer on their respective team
+                    sendGameUpdatedEvent(lobby, dataUrl)
+                    break;
                 default:
                     console.warn(`unhandled event type ${message.event}`)
                     return;
@@ -76,7 +140,7 @@ export const initWebsocketServer = (server: ws.WebSocketServer) => {
         }
 
         socket.on('message', message =>  {
-            let content;
+            let content: SocketEvent;
             try {
                 content = JSON.parse(message.toString());
                 handleMessage(content);

@@ -1,6 +1,4 @@
-import { FormEvent, useRef, useState } from "react"
-import { Navigate } from "react-router-dom";
-import { post } from "../utils/apis";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import "./form-modal.scss";
 import { Response } from "../utils/apis";
 
@@ -16,46 +14,62 @@ export const FormModal = (props: ModalProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const formRef = useRef<HTMLFormElement>(null)
-    
-    const submit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
 
-        if (!formRef.current) return;        
+
+    const submit = async (node: HTMLFormElement) => {
         setIsLoading(true)
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(node);
         const jsonData = Object.fromEntries(formData.entries());
         const response = await props.onSubmit(jsonData);
-        setIsLoading(false)
+
         if (response.error){
-            setError(error)
+            setIsLoading(false)
+            setError(response.error.message)
             return;
         }
-        setIsOpen(false)
     }
 
-    if (isLoading){
-        return <div> Loading <div className=""></div></div>
+    useEffect(() => {
+        const keyPressListener = (ev: KeyboardEvent) => {
+            if (!formRef.current){
+                return
+            }
+            if (ev.key === "Enter"){
+                submit(formRef.current)
+            }
+        }
+        window.addEventListener("keydown", keyPressListener)
+
+        return () => {
+            window.removeEventListener("keydown", keyPressListener)
+        }
+    }, [])
+
+    const formSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        submit(event.currentTarget)
     }
 
     return (
         <>
-            <div onClick={() => setIsOpen(true)}> {props.link} </div>
+            <div onClick={() => setIsOpen(true)}> {isLoading ? "loading..." : props.link} </div>
             { isOpen 
                 ? <div className="modal-main">
-                        <div className="modal-wrapper" style={props.style}>
-                            <form onSubmit={submit} ref={formRef}>
-                                <div className="modal-content">
-                                    {props.content}
+                    <div className="modal-wrapper" style={props.style}>
+                        <form onSubmit={formSubmit} ref={formRef}>
+                            <div className="modal-content">
+                                {props.content}
+                                <div className="modal-buttons">
+                                
                                     {error 
-                                        ? error
+                                        ? <div className="modal-error">{error}</div>
                                         : null
                                     }
-                                    <div className="modal-buttons">
-                                        <button onClick={() => setIsOpen(false)}> cancel </button>
-                                        <input type="submit" value="submit"/>
-                                    </div>
+                                    <button onClick={() => setIsOpen(false)}> cancel </button>
+                                    <input type="submit" value="submit"/>
                                 </div>
-                            </form>
+                            </div>
+                        </form>                        
                         </div>
                     </div>
                 : null
